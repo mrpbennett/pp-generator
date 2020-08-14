@@ -3,6 +3,13 @@
     <div class="w-2/5 px-24">
       <v-form ref="creative-upload">
         <v-text-field :rules="nameRules" v-model="brand" label="Brand Name" required></v-text-field>
+        <v-text-field
+          :rules="nameRules"
+          v-model="url"
+          label="Site Url"
+          placeholder="Enter full url inc. https://"
+          required
+        ></v-text-field>
         <!-- <v-text-field v-model="headline" :rules="nameRules" label="Headline" required></v-text-field> -->
         <input type="file" round class="my-4" @change="onFileChange" />
         <!-- <v-btn color="blue-grey" class="ma-2 white--text" @click="applyCreative">
@@ -26,7 +33,7 @@
       </div>
     </div>
     <div class="w-3/5">
-      <iframe src="https://www.independent.co.uk/" width="100%" height="1000" id="iframe"></iframe>
+      <iframe v-bind:src="url" width="100%" height="1000" id="iframe"></iframe>
     </div>
   </div>
 </template>
@@ -38,6 +45,7 @@
         brand: "",
         headline: "",
         creative: "",
+        url: "",
         iframe: document.getElementById("iframe"),
       };
     },
@@ -74,7 +82,7 @@
 <style>
   .creative-outer {
     position: absolute;
-    top: 267px;
+    top: 257px;
     right: 98px;
     background-color: white;
   }
