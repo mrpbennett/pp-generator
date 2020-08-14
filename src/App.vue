@@ -1,28 +1,36 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+    <v-app>
+        <v-app-bar app color="primary" dark>
+            <h3>PulsePoint Generator</h3>
+            <v-spacer></v-spacer>
+            <v-btn-toggle v-model="display_size">
+                <v-btn>
+                    Mobile
+                </v-btn>
+
+                <v-btn>
+                    Desktop
+                </v-btn>
+            </v-btn-toggle>
+        </v-app-bar>
+
+        <v-main>
+            <v-sitegen />
+        </v-main>
+    </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+    import SiteGenerator from './components/Sitegen';
+    export default {
+        name: 'App',
 
-export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+        components: {
+            'v-sitegen': SiteGenerator,
+        },
+
+        data: () => ({
+            display_size: null,
+        }),
+    };
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
