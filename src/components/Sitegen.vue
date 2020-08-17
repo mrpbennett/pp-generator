@@ -3,6 +3,10 @@
     <div class="w-2/5 px-24">
       <v-form ref="creative-upload">
         <div>
+          <h2 class="font-bold text-xl text-gray-500 mb-4">Enter a brand name:</h2>
+          <v-text-field v-model="brand"></v-text-field>
+        </div>
+        <div>
           <h2 class="font-bold text-xl text-gray-500">Select a site to display</h2>
           <v-overflow-btn class="my-2" :items="sites" v-model="url" label="Select Site"></v-overflow-btn>
         </div>
@@ -50,12 +54,7 @@
         creative: "",
         tag: "",
         url: "",
-        sites: [
-          "https://www.independent.co.uk/",
-          "https://www.cbsnews.com/",
-          "https://uk.news.yahoo.com/",
-          "Verdana",
-        ],
+        sites: ["https://www.independent.co.uk/", "https://www.cbsnews.com/"],
       };
     },
     mounted: {
