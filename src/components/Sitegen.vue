@@ -1,5 +1,5 @@
 <template>
-  <div class="flex mt-12">
+  <div class="flex mt-12" id="wrapper">
     <div class="w-4/12 px-24">
       <v-form ref="creative-upload">
         <div>
@@ -12,7 +12,7 @@
           <h2 class="font-bold text-xl text-gray-500">
             Select a site to display
           </h2>
-          <v-text-field v-model="url" label="Select Site"></v-text-field>
+          <v-text-field v-model="url"></v-text-field>
         </div>
         <div class="my-8">
           <h2 class="font-bold text-xl text-gray-500">
@@ -30,36 +30,31 @@
             label="Paste your script here"
             v-model="tag"
           ></v-textarea>
-          <v-btn @click="uploadCreative" class="mr-4">Upload Creative</v-btn>
-          <v-btn @click="screenshot">Take screenshot</v-btn>
+          <!-- <v-btn @click="uploadCreative" class="mr-4">Upload Creative</v-btn> -->
+          <!-- <v-btn @click="screenshot">Take screenshot</v-btn> -->
         </div>
       </v-form>
+    </div>
 
-      <div class="flex flex-col items-center justify-center py-12">
-        <div class="creative-outer break-words pt-1 pb-4">
-          <div id="creative-upload">
-            <img :src="creative" />
-          </div>
-          <div class="text-left mt-2">
-            <h6 class="font-bold">{{ headline }}</h6>
-            <span class="text-sm text-gray-600">
-              Ads by
-              <span class="text-red-800">{{ brand }}</span>
-            </span>
-          </div>
-        </div>
+    <div id="creative">
+      <img :src="creative" />
+
+      <div class="text-left mt-2">
+        <h6 class="font-bold">{{ headline }}</h6>
+        <span class="text-sm text-gray-600">
+          Ads by
+          <span class="text-red-800">{{ brand }}</span>
+        </span>
       </div>
     </div>
 
-    <div class="w-8/12">
-      <div id="print-screen">
-        <iframe
-          v-bind:src="`https://www.${url}`"
-          width="100%"
-          height="1000"
-          id="iframe"
-        ></iframe>
-      </div>
+    <div class="w-8/12 mx-4">
+      <iframe
+        v-bind:src="`https://www.${url}`"
+        width="100%"
+        height="1000"
+        id="iframe"
+      ></iframe>
     </div>
   </div>
 </template>
@@ -109,18 +104,19 @@
         const creative = document.getElementById('creative-upload');
         creative.appendChild(d);
       },
-      screenshot() {
-        // const canvas = document.getElementById('print-screen');
-      },
     },
   };
 </script>
 
 <style>
-  .creative-outer {
+  #creative {
     position: absolute;
-    top: 257px;
-    right: 98px;
-    background-color: white;
+    bottom: 0;
+    left: 190;
+  }
+
+  #creative:hover {
+    border: 5px solid white;
+    cursor: pointer;
   }
 </style>
