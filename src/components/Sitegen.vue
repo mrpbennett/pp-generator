@@ -1,60 +1,41 @@
 <template>
-  <div class="flex mt-12" id="wrapper">
+  <div class="flex mt-12">
     <div class="w-4/12 px-24">
       <v-form ref="creative-upload">
         <div>
-          <h2 class="font-bold text-xl text-gray-500 mb-4">
-            Enter a brand name:
-          </h2>
+          <h2 class="font-bold text-xl text-gray-500 mb-4">Enter a brand name:</h2>
           <v-text-field v-model="brand"></v-text-field>
         </div>
         <div>
-          <h2 class="font-bold text-xl text-gray-500">
-            Select a site to display
-          </h2>
+          <h2 class="font-bold text-xl text-gray-500">Select a site to display</h2>
           <v-text-field v-model="url"></v-text-field>
         </div>
         <div class="my-8">
-          <h2 class="font-bold text-xl text-gray-500">
-            Choose a creative as an image
-          </h2>
+          <h2 class="font-bold text-xl text-gray-500">Choose a creative as an image</h2>
           <input type="file" round class="my-4" @change="onFileChange" />
         </div>
         <div class="my-8">
-          <h2 class="font-bold text-xl text-gray-500 mb-4">
-            Upload a creative by a tag
-          </h2>
-          <v-textarea
-            solo
-            name="input-7-4"
-            label="Paste your script here"
-            v-model="tag"
-          ></v-textarea>
+          <h2 class="font-bold text-xl text-gray-500 mb-4">Upload a creative by a tag</h2>
+          <v-textarea solo name="input-7-4" label="Paste your script here" v-model="tag"></v-textarea>
           <!-- <v-btn @click="uploadCreative" class="mr-4">Upload Creative</v-btn> -->
           <!-- <v-btn @click="screenshot">Take screenshot</v-btn> -->
         </div>
       </v-form>
     </div>
 
-    <div id="creative">
-      <img :src="creative" />
-
-      <div class="text-left mt-2">
-        <h6 class="font-bold">{{ headline }}</h6>
-        <span class="text-sm text-gray-600">
-          Ads by
-          <span class="text-red-800">{{ brand }}</span>
-        </span>
+    <div class="w-8/12 mx-4" id="wrapper">
+      <div id="creative">
+        <img :src="creative" />
+        <div class="text-left mt-2">
+          <h6 class="font-bold">{{ headline }}</h6>
+          <span class="text-sm text-gray-600">
+            Ads by
+            <span class="text-red-800">{{ brand }}</span>
+          </span>
+        </div>
       </div>
-    </div>
 
-    <div class="w-8/12 mx-4">
-      <iframe
-        v-bind:src="`https://www.${url}`"
-        width="100%"
-        height="1000"
-        id="iframe"
-      ></iframe>
+      <iframe v-bind:src="`https://www.${url}`" width="100%" height="1000" id="iframe"></iframe>
     </div>
   </div>
 </template>
@@ -63,21 +44,39 @@
   export default {
     data() {
       return {
-        brand: '',
-        headline: '',
-        creative: '',
-        tag: '',
-        url: '',
+        brand: "",
+        headline: "",
+        creative: "",
+        tag: "",
+        url: "",
+        draggable: {
+          active: false,
+          currentX: "",
+          currentY: "",
+          initialX: "",
+          initialY: "",
+          xOffset: 0,
+          yOffset: 0,
+        },
       };
     },
-    mounted: {
-      scrollIframe() {
-        this.iframe.contentWindow.scollto({
-          top: 267,
-          right: 98,
-          behavior: 'smooth',
-        });
+
+    computed: {
+      dragItem() {
+        return document.getElementById("creative");
       },
+      container() {
+        return document.getElementById("wrapper");
+      },
+    },
+    mounted() {
+      this.container.addEventListener("touchstart", this.dragStart, false);
+      this.container.addEventListener("touchend", this.dragEnd, false);
+      this.container.addEventListener("touchmove", this.drag, false);
+
+      this.container.addEventListener("mousedown", this.dragStart, false);
+      this.container.addEventListener("mouseup", this.dragEnd, false);
+      this.container.addEventListener("mousemove", this.drag, false);
     },
     methods: {
       onFileChange(e) {
@@ -97,26 +96,75 @@
         reader.readAsDataURL(file);
       },
       uploadCreative() {
-        const d = document.createElement('div');
+        const d = document.createElement("div");
         const tag = this.tag;
         d.innerHTML = tag;
 
-        const creative = document.getElementById('creative-upload');
+        const creative = document.getElementById("creative-upload");
         creative.appendChild(d);
+      },
+      dragStart(e) {
+        if (e.type === "touchstart") {
+          this.draggable.initialX = e.touches[0].clientx - this.draggable.xOffset;
+          this.draggable.initialY = e.touches[0].clienty - this.draggable.yOffset;
+        } else {
+          this.draggable.initialX = e.clientx - this.draggable.xOffset;
+          this.draggable.initialY = e.clienty - this.draggable.yOffset;
+        }
+
+        if (e.target === this.dragItem) {
+          this.draggable.active = true;
+        }
+      },
+      dragEnd() {
+        this.draggable.initialX = this.draggable.currentX;
+        this.draggable.initialY = this.draggable.currentY;
+
+        this.draggable.active = false;
+      },
+      drag(e) {
+        if (this.draggable.active) {
+          e.preventDefault();
+
+          if (e.type === "touchmove") {
+            this.draggable.currentX =
+              e.touches[0].this.clientx - this.draggable.initialX;
+            this.draggable.currentY =
+              e.touches[0].this.clienty - this.draggable.initialY;
+          } else {
+            this.draggable.currentX = e.this.clientx - this.draggable.initialX;
+            this.draggable.currentY = e.this.clienty - this.draggable.initialY;
+          }
+
+          this.draggable.xOffset = this.draggable.currentX;
+          this.draggable.yOffset = this.draggable.currentY;
+
+          this.setTranslate(
+            this.draggable.currentX,
+            this.draggable.currentY,
+            this.dragItem
+          );
+        }
+      },
+      setTranslate(xPos, yPos, el) {
+        el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
       },
     },
   };
 </script>
 
 <style>
+  #wrapper {
+    position: absolute;
+    right: 0;
+    border: 4px red solid;
+  }
   #creative {
     position: absolute;
-    bottom: 0;
-    left: 190;
   }
 
   #creative:hover {
-    border: 5px solid white;
+    border: 2px solid red;
     cursor: pointer;
   }
 </style>
