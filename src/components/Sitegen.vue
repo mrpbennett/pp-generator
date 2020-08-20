@@ -51,10 +51,10 @@
         url: "",
         draggable: {
           active: false,
-          currentX: "",
-          currentY: "",
-          initialX: "",
-          initialY: "",
+          currentX: null,
+          currentY: null,
+          initialX: null,
+          initialY: null,
           xOffset: 0,
           yOffset: 0,
         },
@@ -104,7 +104,8 @@
         creative.appendChild(d);
       },
       dragStart(e) {
-        if (e.type === "touchstart") {
+        if (e.type === "touchstart" || e.type == "mousedown") {
+          console.log("drag started");
           this.draggable.initialX = e.touches[0].clientx - this.draggable.xOffset;
           this.draggable.initialY = e.touches[0].clienty - this.draggable.yOffset;
         } else {
@@ -116,17 +117,21 @@
           this.draggable.active = true;
         }
       },
-      dragEnd() {
-        this.draggable.initialX = this.draggable.currentX;
-        this.draggable.initialY = this.draggable.currentY;
+      dragEnd(e) {
+        if (e.type == "touchend" || e.type == "mouseup") {
+          console.log("drag ended");
+          this.draggable.initialX = this.draggable.currentX;
+          this.draggable.initialY = this.draggable.currentY;
 
-        this.draggable.active = false;
+          this.draggable.active = false;
+        }
       },
       drag(e) {
         if (this.draggable.active) {
+          console.log("draggggg");
           e.preventDefault();
 
-          if (e.type === "touchmove") {
+          if (e.type === "touchmove" || e.type == "mousemove") {
             this.draggable.currentX =
               e.touches[0].this.clientx - this.draggable.initialX;
             this.draggable.currentY =
