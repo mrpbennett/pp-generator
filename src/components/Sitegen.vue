@@ -70,10 +70,6 @@
       },
     },
     mounted() {
-      this.container.addEventListener("touchstart", this.dragStart, false);
-      this.container.addEventListener("touchend", this.dragEnd, false);
-      this.container.addEventListener("touchmove", this.drag, false);
-
       this.container.addEventListener("mousedown", this.dragStart, false);
       this.container.addEventListener("mouseup", this.dragEnd, false);
       this.container.addEventListener("mousemove", this.drag, false);
@@ -104,41 +100,33 @@
         creative.appendChild(d);
       },
       dragStart(e) {
-        if (e.type === "touchstart" || e.type == "mousedown") {
+        if (e.type === "mousedown") {
           console.log("drag started");
-          this.draggable.initialX = e.touches[0].clientx - this.draggable.xOffset;
-          this.draggable.initialY = e.touches[0].clienty - this.draggable.yOffset;
-        } else {
-          this.draggable.initialX = e.clientx - this.draggable.xOffset;
-          this.draggable.initialY = e.clienty - this.draggable.yOffset;
-        }
+          this.draggable.initialX = e.clientX - this.draggable.xOffset;
+          this.draggable.initialY = e.clientY - this.draggable.yOffset;
+          console.log(this.draggable.active);
 
-        if (e.target === this.dragItem) {
           this.draggable.active = true;
         }
       },
       dragEnd(e) {
-        if (e.type == "touchend" || e.type == "mouseup") {
+        if (e.type === "mouseup") {
           console.log("drag ended");
           this.draggable.initialX = this.draggable.currentX;
           this.draggable.initialY = this.draggable.currentY;
 
           this.draggable.active = false;
+          console.log(this.draggable.active);
         }
       },
       drag(e) {
         if (this.draggable.active) {
-          console.log("draggggg");
+          console.log("draggggg" + this.draggable.active);
           e.preventDefault();
 
-          if (e.type === "touchmove" || e.type == "mousemove") {
-            this.draggable.currentX =
-              e.touches[0].this.clientx - this.draggable.initialX;
-            this.draggable.currentY =
-              e.touches[0].this.clienty - this.draggable.initialY;
-          } else {
-            this.draggable.currentX = e.this.clientx - this.draggable.initialX;
-            this.draggable.currentY = e.this.clienty - this.draggable.initialY;
+          if (e.type === "mousemove") {
+            this.draggable.currentX = e.clientX - this.draggable.initialX;
+            this.draggable.currentY = e.clientY - this.draggable.initialY;
           }
 
           this.draggable.xOffset = this.draggable.currentX;
@@ -162,7 +150,6 @@
   #wrapper {
     position: absolute;
     right: 0;
-    border: 4px red solid;
   }
   #creative {
     position: absolute;
