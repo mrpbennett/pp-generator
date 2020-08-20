@@ -104,8 +104,6 @@
           console.log("drag started");
           this.draggable.initialX = e.clientX - this.draggable.xOffset;
           this.draggable.initialY = e.clientY - this.draggable.yOffset;
-          console.log(this.draggable.active);
-
           this.draggable.active = true;
         }
       },
@@ -114,9 +112,7 @@
           console.log("drag ended");
           this.draggable.initialX = this.draggable.currentX;
           this.draggable.initialY = this.draggable.currentY;
-
           this.draggable.active = false;
-          console.log(this.draggable.active);
         }
       },
       drag(e) {
