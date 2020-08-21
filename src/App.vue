@@ -1,14 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app color="indigo darken-2" dark>
       <h3>PulsePoint Generator</h3>
-      <v-spacer></v-spacer>
-
-      <v-btn-toggle v-model="display_size">
-        <v-btn>Mobile</v-btn>
-
-        <v-btn>Desktop</v-btn>
-      </v-btn-toggle>
     </v-app-bar>
 
     <v-main>
@@ -18,12 +11,12 @@
 </template>
 
 <script>
-  import SiteGenerator from "./components/Sitegen";
+  import SiteGenerator from './components/Sitegen';
   export default {
-    name: "App",
+    name: 'App',
 
     components: {
-      "v-sitegen": SiteGenerator,
+      'v-sitegen': SiteGenerator,
     },
 
     data: () => ({

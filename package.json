@@ -12,6 +12,7 @@
     "jspdf": "^2.0.0",
     "vue": "^2.6.11",
     "vue-html2canvas": "0.0.4",
+    "vue-sticky-js": "0.0.4",
     "vuedraggable": "^2.24.0",
     "vuetify": "^2.2.11"
   },
