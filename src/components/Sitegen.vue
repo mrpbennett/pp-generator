@@ -17,7 +17,7 @@
             label="Paste your script here"
             v-model="tag"
           ></v-textarea>
-        </div> -->
+      </div>-->
       <div>
         <div class="mb-12">
           <v-btn-toggle>
@@ -26,16 +26,19 @@
           </v-btn-toggle>
         </div>
         <div>
-          <v-btn @click="uploadCreative" color="primary" class="mr-4"
-            >insert Creative</v-btn
+          <v-btn @click="screenshot" color="primary" class="mr-4" disabled
+            >Take screenshot</v-btn
           >
-          <v-btn @click="screenshot" color="primary">Take screenshot</v-btn>
+
+          <v-btn @click="uploadCreative" color="primary" disabled
+            >insert Creative from tag</v-btn
+          >
         </div>
       </div>
     </div>
 
-    <div class="flex content-center">
-      <div class="laptop-lg" id="wrapper">
+    <div class="w-full mt-24 sticky">
+      <div class="laptop-lg block ml-auto mr-auto" id="wrapper">
         <div id="creative">
           <img :src="creative" />
           <div class="text-left mt-2">
@@ -60,6 +63,9 @@
 </template>
 
 <script>
+  import html2canvas from 'html2canvas';
+  import { saveAs } from 'file-saver';
+
   export default {
     data() {
       return {
@@ -171,14 +177,18 @@
         el.classList.add('laptop-lg');
         el.classList.remove('mobile-lg');
       },
+      screenshot() {
+        html2canvas(document.getElementById('wrapper')).then((canvas) => {
+          canvas.toBlob((blob) => {
+            saveAs(blob, 'screenshot.png');
+          });
+        });
+      },
     },
   };
 </script>
 
 <style>
-  #wrapper {
-    position: absolute;
-  }
   #creative {
     position: absolute;
   }

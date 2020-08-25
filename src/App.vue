@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app color="indigo darken-2" dark>
-      <h3>PulsePoint Generator</h3>
+      <h3 class="font-bold tracking-wider">PulsePoint Generator</h3>
     </v-app-bar>
 
     <v-main>
@@ -11,12 +11,12 @@
 </template>
 
 <script>
-  import SiteGenerator from './components/Sitegen';
+  import SiteGenerator from "./components/Sitegen";
   export default {
-    name: 'App',
+    name: "App",
 
     components: {
-      'v-sitegen': SiteGenerator,
+      "v-sitegen": SiteGenerator,
     },
 
     data: () => ({
