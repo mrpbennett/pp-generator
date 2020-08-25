@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to take a screen shot and save to file via btn click
 - iframe to be sticky past scroll
 
-## [0.0.2] - 2020-08-14
+## [0.0.2] - 2020-08-14 - [4cf098f](https://github.com/mrpbennett/pp-generator/commit/4cf098ff30f89e0fef0a2106137074a364f5d079)
 
 ### Added
 
