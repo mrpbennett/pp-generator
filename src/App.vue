@@ -1,14 +1,7 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <h3>PulsePoint Generator</h3>
-      <v-spacer></v-spacer>
-
-      <v-btn-toggle v-model="display_size">
-        <v-btn>Mobile</v-btn>
-
-        <v-btn>Desktop</v-btn>
-      </v-btn-toggle>
+    <v-app-bar app color="indigo darken-2" dark>
+      <h3 class="font-bold tracking-wider">PulsePoint Generator</h3>
     </v-app-bar>
 
     <v-main>
