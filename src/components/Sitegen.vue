@@ -26,13 +26,15 @@
           </v-btn-toggle>
         </div>
         <div>
-          <v-btn @click="screenshot" color="primary" class="mr-4" disabled
+          <v-btn @click="screenshot" color="primary" class="mr-4" 
             >Take screenshot</v-btn
           >
 
           <v-btn @click="uploadCreative" color="primary" disabled
             >insert Creative from tag</v-btn
           >
+
+          <v-btn @click="replaceAds" color="primary">Replace Ads</v-btn>
         </div>
       </div>
     </div>
@@ -51,7 +53,7 @@
         </div>
 
         <iframe
-          v-bind:src="`https://www.${url}`"
+          v-bind:src="`http://${url}.${domainSuffix}`"
           width="100%"
           height="1000"
           id="iframe"
@@ -74,6 +76,7 @@
         creative: '',
         tag: '',
         url: '',
+        domainSuffix: 'proxy.localhost:9999',
         draggable: {
           active: false,
           currentX: null,
@@ -178,12 +181,40 @@
         el.classList.remove('mobile-lg');
       },
       screenshot() {
-        html2canvas(document.getElementById('wrapper')).then((canvas) => {
-          canvas.toBlob((blob) => {
-            saveAs(blob, 'screenshot.png');
-          });
-        });
+        if(html2canvas||saveAs){
+          //donothing
+        }
+        const w = document.getElementById('iframe').contentWindow;
+        const d = w.document;
+        const s = d.createElement('script');
+        s.src = 'https://gist.githubusercontent.com/CrandellWS/6bc2078aced496004d7a045e6360f19b/raw/9ae761864bbc67bc7298814bff703a4a6baaf709/html2canvas.js'
+        const ss = () =>{
+          w.origin = window.origin;
+          w.html2canvas(d.body).then(canvas=>{
+            var a = d.createElement('a');
+            a.href = canvas.toDataURL("image/jpeg").replace("image/jpeg", "image/octet-stream");
+            a.download = 'screenshot.jpg';
+            a.click();
+          }).catch((e)=>alert(e));
+        }
+        s.onload = ss;
+        d.body.appendChild(s);
       },
+      replaceAds() {
+        const potentialAds = Array.from(document.getElementById('iframe').contentWindow.document.querySelectorAll('div,iframe'));
+        for(let i =0; i< potentialAds.length; i++){
+          const e = potentialAds[i];
+          if(e.clientWidth==1260 && (e.clientHeight==250 || e.clientHeight==90)){
+            const d = document.createElement('div');
+            d.style = e.style;
+            // d.style='border: solid black 1px; width:728px; height:90px;'
+            d.style['border'] = 'solid black 1px';
+            d.innerHTML="LOL this is an ad";
+            e.parentNode.replaceChild(d,e);
+            break;
+          }
+        }
+      }
     },
   };
 </script>

@@ -1,0 +1,11 @@
+{
+    "plugins": "",
+    "forceHTTP": true,
+    "proxyDomain": "proxy.localhost:9999",
+    "listeningAddress": "0.0.0.0",
+    "listeningPortHTTP": 9999,
+    "disableSecurity": true,
+    "debug": false,
+    "dynamicMode": false,
+    "jsRules": ":ZG9jdW1lbnQuZG9tYWluPSdwcm94eS5sb2NhbGhvc3Qn"
+}
